@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import datetime
+import requests
 import abc
 import functools
 import logging
@@ -279,6 +281,7 @@ class ClientTrader(IClientTrader):
         raise TypeError("不支持对应的市价类型: {}".format(ttype))
 
     def auto_ipo(self):
+        # print('auto_ipo ')
         self._switch_left_menus(self._config.AUTO_IPO_MENU_PATH)
 
         stock_list = self._get_grid_data(self._config.COMMON_GRID_CONTROL_ID)
@@ -303,6 +306,35 @@ class ClientTrader(IClientTrader):
         self.wait(0.1)
 
         return self._handle_pop_dialogs()
+
+    def auto_ipo_kzz(self):
+        self._switch_left_menus(self._config.AUTO_IPO_KZZ_MENU_PATH)
+        self._click(self._config.AUTO_IPO_SELECT_ALL_KZZ_BUTTON_CONTROL_ID)
+        self.wait(0.2)
+        print('auto_ipo_kzz')
+
+        return self._handle_pop_dialogs()
+
+    def ipo_KZZ(self,quanshang='HT'):
+        print('ipo kzz HT ')
+        r = requests.get(r'http://data.eastmoney.com/kzz/default.html').text
+        code = re.compile('"CORRESCODE":"(.*?)",', re.S).findall(r)
+        day = re.compile('"STARTDATE":"(.*?)",', re.S).findall(r)
+        today = datetime.datetime.now().strftime('%Y-%m-%d')
+        for i in range(0, len(day)):
+            per_code = code[i]
+            per_day = day[i].replace('T00:00:00', '')
+            num = 10000
+            if quanshang != 'PA' and per_code[0]=='7':
+                num = 1000
+            if per_day == today:
+                print('今天申购：',per_code, 100, num)
+                try:
+                    ret = self.buy(per_code, 100, num)
+                    print('ipo kzz return : ', ret)
+                    # return ret
+                except:
+                    print('erro')
 
     def _click_grid_by_row(self, row):
         x = self._config.COMMON_GRID_LEFT_MARGIN

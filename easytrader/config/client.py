@@ -116,6 +116,8 @@ class HT(CommonConfig):
     }
 
     AUTO_IPO_MENU_PATH = ["新股申购", "批量新股申购"]
+    AUTO_IPO_KZZ_MENU_PATH = ["新股申购", "批量新债申购"]
+    AUTO_IPO_SELECT_ALL_KZZ_BUTTON_CONTROL_ID = 1099
 
 
 class GJ(CommonConfig):
