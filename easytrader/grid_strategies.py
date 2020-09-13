@@ -176,7 +176,6 @@ class Xls(BaseStrategy):
 
     def get(self, control_id: int) -> List[Dict]:
         grid = self._get_grid(control_id)
-
         # ctrl+s 保存 grid 内容为 xls 文件
         self._set_foreground(grid)  # setFocus buggy, instead of SetForegroundWindow
         grid.type_keys("^s", set_foreground=False)
@@ -184,7 +183,7 @@ class Xls(BaseStrategy):
         while count > 0:
             if self._trader.is_exist_pop_dialog():
                 break
-            self._trader.wait(0.2)
+            self._trader.wait(1.0)
             count -= 1
 
         temp_path = tempfile.mktemp(suffix=".xls", dir=self.tmp_folder)
@@ -192,13 +191,13 @@ class Xls(BaseStrategy):
 
         # alt+s保存，alt+y替换已存在的文件
         self._trader.app.top_window().Edit1.set_edit_text(temp_path)
-        self._trader.wait(0.1)
+        self._trader.wait(1.0)
         self._trader.app.top_window().type_keys("%{s}%{y}", set_foreground=False)
         # Wait until file save complete otherwise pandas can not find file
-        self._trader.wait(0.2)
+        self._trader.wait(2.0)
         if self._trader.is_exist_pop_dialog():
             self._trader.app.top_window().Button2.click()
-            self._trader.wait(0.2)
+            self._trader.wait(2.0)
 
         return self._format_grid_data(temp_path)
 
