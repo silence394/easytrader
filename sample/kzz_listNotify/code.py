@@ -52,24 +52,29 @@ myKzz = []
 
 
 ### 遍历东方财富的可转债信息
-r = requests.get(r'http://data.eastmoney.com/kzz/default.html')
-# r.encoding='utf-8'
+# r = requests.get(r'http://data.eastmoney.com/kzz/default.html')
+# # r.encoding='utf-8'
+# r = r.text
+
+r = requests.get(r'https://www.jisilu.cn/data/cbnew/#pre/data/cbnew/cb_list/')
+r.encoding='utf-8'
 r = r.text
+print(r)
 
-# print('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', r)
-code = re.compile('"CORRESCODE":"(.*?)",', re.S).findall(r)
-print('codeddddddddddddddddddddddd', code)
-day = re.compile('"STARTDATE":"(.*?)",', re.S).findall(r)
-print('day!!!', day)
-today = datetime.datetime.now().strftime('%Y-%m-%d')
-print('today', today)
+# # print('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', r)
+# code = re.compile('"CORRESCODE":"(.*?)",', re.S).findall(r)
+# print('codeddddddddddddddddddddddd', code)
+# day = re.compile('"STARTDATE":"(.*?)",', re.S).findall(r)
+# print('day!!!', day)
+# today = datetime.datetime.now().strftime('%Y-%m-%d')
+# print('today', today)
 
-listData = re.compile('"LISTDATE":"(.*?)",', re.S).findall(r)
+# listData = re.compile('"LISTDATE":"(.*?)",', re.S).findall(r)
 
-print('listData, ', len(listData), listData)
+# print('listData, ', len(listData), listData)
 
-ZGJ = re.compile('"ZGJ_HQ":"(.*?)",', re.S).findall(r)
-print('ZGJ', ZGJ)
+# ZGJ = re.compile('"ZGJ_HQ":"(.*?)",', re.S).findall(r)
+# print('ZGJ', ZGJ)
 
 
 # data_parse = HTMLParser.HTMLParser()
